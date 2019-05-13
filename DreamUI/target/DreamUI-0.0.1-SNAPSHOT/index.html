@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  
+  <script>
+$(document).ready(function(){
+  $("#match").click(function(){
+    $("#teamSelector").show();
+    $("#points").show();
+  });
+});
+</script>
+
+<style type="text/css">
+.wrapper .post {
+-moz-border-radius:7px 7px 7px 7px;
+border:1px solid silver;
+float:left;
+margin:10px;
+min-height:100px;
+padding:5px;
+width:700px;
+background-color: orange;
+}
+#myteam{
+clear:both
+}
+
+</style>
+
+<title>Dream 11 fantasy league</title>
+</head>
+<body>
+
+<h1 class="bg-info">Welcome to Dream 11</h1>
+
+<h3 id="match">Team1 vs Team 2</h3>
+
+<p id="points" style="display: none" class=" bg-info">Points used : 100 </br>
+Points Left : 50
+</p>    
+
+<div id ="teamSelector" style="display: none" class="wrapper">
+<div class="post">
+    <div>
+   Team1 (Select Players)
+    </div>
+    <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+    <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+   <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+    <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+   <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+</div>
+
+<div class="post">
+    <div>
+    Team2 (Select Players)
+    </div>
+   <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+   <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+    <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+     <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+    <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+     
+   <div class="bg-primary">
+     playerName price
+     <button class="bg-danger">select</button> 
+     </div>
+    
+    
+</div>
+</div>
+
+
+
+<div id ="teamSelector" style="display: none" class="wrapper">
+<div class="post">
+    <div id = "myteam">
+   Team1 (Select Players)
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>
