@@ -8,7 +8,23 @@ public class Team {
 	private String name;
 	private int captainId;
 	private int viceCaptainId;
+	private int userId;
+	private int matchId;
 	private List<Player> players;
+	
+	public int getMatchId() {
+		return matchId;
+	}
+	public void setMatchId(int matchId) {
+		this.matchId = matchId;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
 	
 	public List<Player> getPlayers() {
 		return players;

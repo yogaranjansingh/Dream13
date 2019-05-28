@@ -1,0 +1,52 @@
+<h1>My Team</h1>
+
+	<div id="outer">
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[0].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[1].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[2].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[3].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[4].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[5].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[6].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[7].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[8].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[9].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[10].name}}</div>
+	</div>
+
+	<h1>Opponents Team</h1>
+		<div id="outer">
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[0].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[1].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[2].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[3].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[4].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[5].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[6].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[7].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[8].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[9].name}}</div>
+		<div id="team" class="col-sm-1" style="display: inline-block">{{selectedPlayers[10].name}}</div>
+	</div>
+	
+	{{loadedTeams}}
+	
+	<div class="container">
+  <h2>Black/Dark Table</h2>
+  <p>The .table-dark class adds a black background to the table:</p>            
+  <table ng-repeat="x in loadedTeams" class="table table-dark">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="y in x.players">
+        <td>{{y.name}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+	

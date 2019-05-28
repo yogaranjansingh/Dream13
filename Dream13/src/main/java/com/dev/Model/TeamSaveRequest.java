@@ -1,12 +1,21 @@
 package com.dev.Model;
 
+import java.util.List;
+
 public class TeamSaveRequest {
 
 	
 	private Team team;
 	private User user;
 	private Game game;
+	private List<Player> players;
 	
+	public List<Player> getPlayers() {
+		return players;
+	}
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
 	public Team getTeam() {
 		return team;
 	}

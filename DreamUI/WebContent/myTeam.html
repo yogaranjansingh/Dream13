@@ -1,0 +1,23 @@
+<h1>My Team</h1>
+
+
+<!-- <button type="button" class="btn btn-primary" ng-click="refreshTeams()">Refresh</button> -->
+<div >Your opponent has not selected team yet</</div>
+	<div class="container">
+  <table ng-repeat="x in loadedTeams" ng-hide="x.id==0" class="table table-dark col-sm-5" style="display: inline-block;">
+    <thead>
+      <tr>
+        <th>name</th>
+        <th>playerType</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="y in x.players">
+        <td>{{y.name}}</td>
+        <td>{{y.playerType}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+	
+	

@@ -18,6 +18,27 @@ public class Player {
 	}
 	private String name;
 	private String team;
+	private boolean selected;
+	private boolean isCaptain;
+	private boolean isViceCaptain;
+	public boolean isCaptain() {
+		return isCaptain;
+	}
+	public void setCaptain(boolean isCaptain) {
+		this.isCaptain = isCaptain;
+	}
+	public boolean isViceCaptain() {
+		return isViceCaptain;
+	}
+	public void setViceCaptain(boolean isViceCaptain) {
+		this.isViceCaptain = isViceCaptain;
+	}
+	public boolean isSelected() {
+		return selected;
+	}
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 	private int price;
 	private int pointsScored;
 	private int pointsThisSeason;
