@@ -9,10 +9,11 @@ Steps to run the code :
 5. Import data in mysql using the sql dump file in repo (dream13.sql)
 
 6. run the following query in mysql workbench
-delete from Dream11.Team where id>0;
-delete from Dream11.match where id>0;
+* delete from Dream11.Team where id>0;
 
-hit the below get api from browser/postman
+* delete from Dream11.match where id>0;
+
+hit the below get api from browser/postman (this populates a match data in the db)
 http://localhost:8080/Dream13/rest/v1/saveMatch
 
 7. open url in brpwser : 
