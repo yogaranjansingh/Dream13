@@ -12,11 +12,13 @@ Steps to run the code :
 delete from Dream11.Team where id>0;
 delete from Dream11.match where id>0;
 
-Hit the below get api from browser/postman
+hit the below get api from browser/postman
 http://localhost:8080/Dream13/rest/v1/saveMatch
 
 7. open url in brpwser : 
 http://localhost:8080/DreamUI/
+
+****************************************************************************************
 
 * login with your credentials / if profile is not created yet, register first
 
