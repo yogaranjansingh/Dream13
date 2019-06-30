@@ -18,13 +18,21 @@ http://localhost:8080/Dream13/rest/v1/saveMatch
 7. open url in brpwser : 
 http://localhost:8080/DreamUI/
 
-login with your credentials / if profile is not created yet, register first
-select the match you want to play
-select your team
-preview your team below the team selector
-proceed with the team .
-refresh match to see if the opponent has also selected the team
-once the opponent has selected the team, start match option should appear
-start the match 
-Enjoy the match
+* login with your credentials / if profile is not created yet, register first
+
+* select the match you want to play
+
+* select your team
+
+* preview your team below the team selector
+
+* proceed with the team .
+
+* refresh match to see if the opponent has also selected the team
+ 
+* once the opponent has selected the team, start match option should appear
+
+* start the match 
+
+* Enjoy the match
 
