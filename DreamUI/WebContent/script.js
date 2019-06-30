@@ -1,4 +1,4 @@
-app.controller('myCtrl', function($rootScope,$rootScope, $window, $http, $location,
+app.controller('myCtrl', function($scope,$rootScope, $window, $http, $location,$route,
 		testService, addSelectedPlayerService, utilService) {
 
 	$rootScope.count = 0;
@@ -19,6 +19,9 @@ app.controller('myCtrl', function($rootScope,$rootScope, $window, $http, $locati
 	$rootScope.loggedin = false;
 	$rootScope.teamPlayers1 = [];
 	$rootScope.teamPlayers2 = [];
+	$rootScope.opponentSelected = false;
+	$rootScope.disableProceed = true;
+
 	
 	$rootScope.selectedMatch = null;
 	$rootScope.loggedinUser = utilService.loggedUser;
@@ -31,6 +34,11 @@ app.controller('myCtrl', function($rootScope,$rootScope, $window, $http, $locati
 	$rootScope.selectedPlayers = addSelectedPlayerService.selectedPlayers;
 
 	console.log("inside controller " + $rootScope.matches);
+	console.log("inside controller yoga" + $rootScope.loadedTeams);
+	
+	//console.log("user added through session "+session.getAttribute());
+	
+	
 
 	$rootScope.getIPlTeams = function(teamid1, teamid2) {
 		
@@ -67,6 +75,7 @@ app.controller('myCtrl', function($rootScope,$rootScope, $window, $http, $locati
 		$rootScope.count = $rootScope.count + 1;
 		addSelectedPlayerService.myFunc(name,id);
 		if ($rootScope.count == 11) {
+			$rootScope.disableProceed = false;
 			$rootScope.selectedPlayers = addSelectedPlayerService.selectedPlayers;
 			window.alert("11 players selected, Please proceed");
 		}
@@ -80,12 +89,20 @@ app.controller('myCtrl', function($rootScope,$rootScope, $window, $http, $locati
 			$http.get(
 					"http://localhost:8080/Dream13/rest/v1/joinMatch?userId="
 							+utilService.loggedUser.id +"&matchId=" +utilService.selectedMatch.id ).then(function(response) {
-								utilService.loadedTeams = response.data;
-								$rootScope.loadedTeams = response.data;
-								console.log(utilService.loadedTeams);
+								$rootScope.loadTeams();
 			});
 		
 		$location.path('/myteam');
+	};
+	
+	$rootScope.loadTeams = function() {
+		$http.get(
+				"http://localhost:8080/Dream13/rest/v1/loadTeams?userId="
+						+utilService.loggedUser.id +"&matchId=" +utilService.selectedMatch.id ).then(function(response) {
+							utilService.loadedTeams = response.data;
+							$rootScope.loadedTeams = response.data;
+							console.log(utilService.loadedTeams);
+		});
 	};
 	
 //	$rootScope.loadTeamPlayers = function() {
@@ -104,6 +121,19 @@ app.controller('myCtrl', function($rootScope,$rootScope, $window, $http, $locati
 	$rootScope.viceCaptainSelected = function() {
 		$rootScope.viceCaptainSelectedFlag = true
 	};
+	
+//	console.log(document.cookie);
+//	$rootScope.apiToken = null;
+//	if(document.cookie) {
+//		var tokenArr = document.cookie.split("=");
+//		var token = tokenArr[1];
+//		$rootScope.apiToken = token;
+//		//call the fetch user details with the token
+//	}
+	
+//	$rootScope.fetchUserDetails = function (token) {
+//		// hit the api to get the user details
+//	}
 
 	$rootScope.login = function(username, password) {
 		var data = {
@@ -113,6 +143,10 @@ app.controller('myCtrl', function($rootScope,$rootScope, $window, $http, $locati
 		$http.post("http://localhost:8080/Dream13/rest/user/login", data, null)
 				.then(function(response) {
 					console.log("login success")
+//					document.cookie="token="+response.data.token;
+//					$rootScope.apiToken = response.data.token; 
+//					console.log("user added through session ", response);
+					//with token call fetchUserdetails function
 					$rootScope.loggedinUser = response.data;
 					utilService.loggedUser = $rootScope.loggedinUser;
 					$rootScope.LoginFailureMessage = "";
@@ -145,13 +179,33 @@ app.controller('myCtrl', function($rootScope,$rootScope, $window, $http, $locati
 	};
 	
 	$rootScope.refreshTeams = function() {
-		$scope.joinMatch();
+		$rootScope.loadTeams();
+		$rootScope.getMatch();
 	};
 	
 	
 	$rootScope.selectMatch = function(match) {
 		$rootScope.selectedMatch = match;
 		utilService.selectedMatch = match;
+	};
+	
+
+	$rootScope.getMatch = function() {
+		$http.get(
+				"http://localhost:8080/Dream13/rest/v1/getMatchById?matchId="+utilService.selectedMatch.id ).then(function(response) {
+					$rootScope.score1 = response.data.score1;
+					utilService.score1 = response.data.score1;
+					$rootScope.score2 = response.data.score2;
+					utilService.score2 = response.data.score2;
+		});
+	};
+
+	
+	$rootScope.startMatch = function() {
+		$http.get(
+				"http://localhost:8080/Dream13/rest/v1/startMatch?matchId=" +utilService.selectedMatch.id ).then(function(response) {
+					console.log("matchStarted");
+		});
 	};
 
 	$rootScope.saveTeam = function() {

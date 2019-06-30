@@ -35,15 +35,18 @@ public class TeamDaoImpl implements TeamDao{
 	private final String SQL_INSERT_TEAM = "insert into TEAM(name, captain_id, vice_captain_id, user_id, match_id ) values(?,?,?,?,?)";
 	private final String SQL_GET_TEAM_BY_ID = "select * from Team where id = ?";
 	private final String SQL_GET_IPL_TEAM = "select * from IPLTeam where id = ?";
+	private final String SQL_GET_IPL_Players = "select * from Player where teamid = ?";
 	private final String SQL_GET_Players = "select * from Player where teamid = ?";
+	private final String SQL_GET_PLAYERS_FROM_TEAM = "select * from Dream11.team_has_players where team_id = ?";
 	private final String SQL_SAVE_TEAM_HAS_Players = "insert into team_has_players(team_id, player_id) values(?, ?)";
 	private final String SQL_GET_PlAYER_BY_ID = "Select * from Player where id = ?";
 	private final String SQL_TEAM_BY_USERID_AND_MATCHID = "Select * from TEAM where user_id = ? and match_id= ?";
+	private final String SQL_GET_PLAYER_BY_ID = "select * from Dream11.Player where id = ?";
 
 	public List<Player> getPlayers(int teamId) {
 		List<Player> players = new ArrayList<Player>();
 		
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_GET_Players,teamId);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_GET_IPL_Players,teamId);
 		
 		for (Map row : rows) {
 			Player player = new Player();
@@ -56,6 +59,17 @@ public class TeamDaoImpl implements TeamDao{
 		}
 			
 		return players;
+	}
+	
+	public List<Player> getPlayersFromTeam(int teamId) {
+		List<Player> playerList = new ArrayList<Player>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_GET_PLAYERS_FROM_TEAM,teamId);
+		for (Map row : rows) {
+			Player player = (Player) jdbcTemplate.queryForObject(SQL_GET_PLAYER_BY_ID, new Object[] { row.get("player_id") },
+					new BeanPropertyRowMapper(Player.class));
+			playerList.add(player);
+		}
+		return playerList;
 	}
 
 	public void savePlayers(TeamSaveRequest request) {
@@ -123,6 +137,9 @@ public class TeamDaoImpl implements TeamDao{
 		Team team = (Team) jdbcTemplate.queryForObject(
 				SQL_GET_TEAM_BY_ID, new Object[] { teamId }, 
 				new BeanPropertyRowMapper(Team.class));
+		
+		List<Player> players = this.getPlayersFromTeam(teamId);
+		team.setPlayers(players);
 		return team;
 	}
 	

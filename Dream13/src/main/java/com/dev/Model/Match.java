@@ -1,7 +1,7 @@
 package com.dev.Model;
 
 import java.util.Date;
-import java.util.HashMap;
+
 
 public class Match {
 	
@@ -15,11 +15,21 @@ public class Match {
 	private int teamId1;
 	private int teamId2;
 	private String status;
+	private int score1;
+	private int score2;
 	
-	HashMap<Integer, String> m = new HashMap<Integer, String>();
-	
-	
-
+	public int getScore1() {
+		return score1;
+	}
+	public void setScore1(int score1) {
+		this.score1 = score1;
+	}
+	public int getScore2() {
+		return score2;
+	}
+	public void setScore2(int score2) {
+		this.score2 = score2;
+	}
 	public int getId() {
 		return id;
 	}

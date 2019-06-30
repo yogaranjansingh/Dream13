@@ -13,6 +13,7 @@ public class User {
 	private Match currentMatch;
 	private int currentScore;
 	private int walletBalance;
+	
 	public int getId() {
 		return id;
 	}
@@ -68,7 +69,4 @@ public class User {
 		this.walletBalance = walletBalance;
 	}
 	
-	
-	
-
 }

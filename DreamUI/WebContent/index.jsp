@@ -89,7 +89,7 @@ body {
 			<h1 style="color: red; text-align: center">Welcome to Dream11</h1>
 		</div>
 
-		<div class="col-sm-3 ">
+		<div class="col-sm-3" >
 
 
 			<div ng-show="LoginDiv">

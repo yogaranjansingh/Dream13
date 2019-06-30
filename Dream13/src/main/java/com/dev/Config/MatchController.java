@@ -2,11 +2,13 @@
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,7 +45,7 @@ public class MatchController {
     }
  
     @RequestMapping("/nextDelivery")
-    public DeliveryInfo nextDelivery() {//REST Endpoint.
+    public Integer nextDelivery() {//REST Endpoint.
     	DeliveryInfo dv = new DeliveryInfo();
     	int delivery[] = {0,1,2,3,4,6,-1,-2,-3};
     	Random random = new Random();
@@ -54,7 +56,7 @@ public class MatchController {
     	if(rand==1 || rand==3)
     		swapBatsman(dv);
     	
-    	return dv;
+    	return rand;
     }
     
     
@@ -78,10 +80,16 @@ public class MatchController {
     	return teamDaoimpl.getIPLTeam(iplTeamId);
     }
     
-    @RequestMapping("/joinMatch")
-    public List<Team> joinMatch(@RequestParam int userId, @RequestParam int matchId) {
+    @RequestMapping(value="/joinMatch", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+    public Match joinMatch(@RequestParam int userId, @RequestParam int matchId) {
     	logger.info("Inside controller join match UserId = "+userId + " matchId=" +matchId);
-    	List<Team> teams = matchDaoImpl.joinMatch(userId, matchId);
+    	Match match = matchDaoImpl.joinMatch(userId, matchId);
+    	return match;
+    }
+    
+    @RequestMapping("/loadTeams")
+    public List<Team> loadTeams(@RequestParam int userId, @RequestParam int matchId) {
+    	List<Team> teams = matchDaoImpl.loadTeams(userId, matchId);
     	return teams;
     }
     
@@ -125,6 +133,119 @@ public class MatchController {
     	 * randomly creating match. the saveMatch api will bbe called twice a day or so.
     	 */
     	return matchDaoImpl.getTodayMatches();
+    }
+    
+    @RequestMapping("/getMatchById")
+    public Match getMatchById(@RequestParam int matchId) {
+    	return matchDaoImpl.getMatchyId(matchId);
+    }
+    
+    @RequestMapping("/getTeamById")
+    public Team getTeamById(@RequestParam int teamId) {
+    	return teamDaoimpl.getTeamById(teamId);
+    }
+    
+    @RequestMapping("/startMatch")
+    public void startMatch(@RequestParam int matchId) throws InterruptedException {
+    	Match match = this.getMatchById(matchId);
+    	int deliveriesPlayed = 0;
+    	int totalScore =0;
+    	IPLTeam iplTeam1 = this.getIPLTeam(match.getIplTeam1Id());
+    	
+    	IPLTeam iplTeam2 = this.getIPLTeam(match.getIplTeam2Id());
+    	
+    	logger.info("************************************************");
+    	logger.info("************************************************");
+    	logger.info("IPLTeam1 = "+iplTeam1);
+    	logger.info("IPLTeam1 = "+iplTeam2);
+    	
+    		
+    	
+    	Team team1 = this.getTeamById(match.getTeamId1());
+    	Team team2 =  this.getTeamById(match.getTeamId2());
+    	
+    	logger.info("Team1="+team1);
+    	logger.info("Team2="+team2);
+    	int score1 = 0;
+    	int score2 = 0;
+    	
+    	HashSet<Integer> t1 = new HashSet<Integer>();
+    	HashSet<Integer> t2 = new HashSet<Integer>();
+    	
+    	for(Player p : team1.getPlayers())
+    	{
+    		t1.add(p.getId());
+    	}
+    	
+    	for(Player p : team2.getPlayers())
+    	{
+    		t2.add(p.getId());
+    	}
+    	
+    	List<Player> players1 = iplTeam1.getPlayers();
+    	List<Player> players2 = iplTeam1.getPlayers();
+    	
+    	int currentlyBatting= 0;
+    	Player bat1 = players1.get(currentlyBatting);
+    	Player bat2 = players1.get(currentlyBatting+1);
+    	
+    	while(deliveriesPlayed<=120 || currentlyBatting<=10)
+    	{
+    		
+    		logger.info("match is running");
+			int delivery = this.nextDelivery();
+			if(delivery == -3)
+			{
+				currentlyBatting+=1;
+				bat1 = players1.get(currentlyBatting);
+				deliveriesPlayed++;
+				logger.info("*******--OUT--********");
+			}
+			
+			else if(delivery == -2 ||delivery==-1)
+			{
+				if(t1.contains(bat1.getId()))
+					score1+=1;
+				logger.info("*******--Wide Ball--********");
+			}
+			else
+			{
+				if(t1.contains(bat1.getId()))
+					score1+=delivery;
+				if(t2.contains(bat1.getId()))
+					score2+=delivery;
+				
+				if(delivery==1 || delivery==3)
+				{
+					Player temp = bat1;
+					bat1 = bat2;
+					bat2 = temp;
+				}
+				deliveriesPlayed++;
+				logger.info("*******--run scored--******** "+delivery+"  runs");
+			}
+			
+			if(deliveriesPlayed%6==0)
+			{
+				Player temp = bat1;
+				bat1 = bat2;
+				bat2 = temp;
+				logger.info("*******--Over Complete--********");
+			}
+			logger.info("@@@@@@@@@@@@@@@@@@");
+			logger.info("Updating score score1="+score1+" and score2 = "+score2);		
+			logger.info("@@@@@@@@@@@@@@@@@@");
+			matchDaoImpl.updateScore(score1, score2, matchId);
+			Thread.sleep(3000);
+    	}
+    	logger.info("inning complete");
+    	
+    }
+    
+    @RequestMapping("/updatePoints")
+    public void updatePoints(int matchId, int deliveryCode) {
+    	
+    	matchDaoImpl.updateCurrentState(matchId,deliveryCode);
     }
     
 }

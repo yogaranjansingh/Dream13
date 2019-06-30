@@ -11,7 +11,14 @@ public class Team {
 	private int userId;
 	private int matchId;
 	private List<Player> players;
+	private int score;
 	
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
+	}
 	public int getMatchId() {
 		return matchId;
 	}

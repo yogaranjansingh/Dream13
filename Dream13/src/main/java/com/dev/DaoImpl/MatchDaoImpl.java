@@ -29,12 +29,13 @@ public class MatchDaoImpl implements MatchDao {
 	TeamDao teamDao;
 
 	private final String SQL_GET_MATCH_BY_ID = "select * from Dream11.match where id = ?";
-	private final String SQL_SAVE_MATCH = "insert into Dream11.match(status, result, userid1, userid2, dateOfMatch, teamid1, teamid2, iplTeamId1, iplTeamId2) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private final String SQL_SAVE_MATCH = "insert into Dream11.match(status, result, userid1, userid2, dateOfMatch, teamid1, teamid2, iplTeam1Id, iplTeam2Id) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private final String SQL_UPDATE_MATCH1 = "update Dream11.match set userid1 = ? , teamid1 = ? where id = ?";
 	private final String SQL_UPDATE_MATCH2 = "update Dream11.match set userid2 = ? , teamid2 = ? where id = ?";
 	private final String SQL_GET_MATCHES = "select * from Dream11.match";
 	private final String SQL_GET_PLAYERS_FROM_TEAM = "select * from Dream11.team_has_players where team_id = ?";
 	private final String SQL_GET_PLAYER_BY_ID = "select * from Dream11.Player where id = ?";
+	private final String SQL_UPDATE_MATCH_SCORE = "update Dream11.match set score1 = ? , score2 = ? where id = ?";
 
 	public void saveMatch(Match match) throws Exception {
 		jdbcTemplate.update(SQL_SAVE_MATCH, match.getStatus(), match.getResult(), match.getUserId1(),
@@ -47,18 +48,24 @@ public class MatchDaoImpl implements MatchDao {
 				new BeanPropertyRowMapper(Match.class));
 		return match;
 	}
-
-	public List<Team> joinMatch(int userId, int matchId) {
-		logger.info("/n looking for team with userId=" + userId + " and matchId = " + matchId);
-		Team team = teamDao.getTeamByUserAndMatch(userId, matchId);
-
+	
+	public Match joinMatch(int userId, int matchId)
+	{
 		Match match = this.getMatchyId(matchId);
+		Team team = teamDao.getTeamByUserAndMatch(userId, matchId);
 		if (match.getUserId1() == 0) {
 			jdbcTemplate.update(SQL_UPDATE_MATCH1, userId, team.getId(), match.getId());
 		} else {
 			jdbcTemplate.update(SQL_UPDATE_MATCH2, userId, team.getId(), match.getId());
 		}
-		match = this.getMatchyId(matchId);
+		return match;
+	}
+
+	public List<Team> loadTeams(int userId, int matchId) {
+		logger.info("/n looking for team with userId=" + userId + " and matchId = " + matchId);
+		Team team = teamDao.getTeamByUserAndMatch(userId, matchId);
+
+		Match match = this.getMatchyId(matchId);
 		Team team1 = null;
 		Team team2 = null;
 		try {
@@ -108,8 +115,8 @@ public class MatchDaoImpl implements MatchDao {
 			Match match = new Match();
 			match.setId((Integer) row.get("id"));
 			match.setDateOfMatch((Date) row.get("dateOfMatch"));
-			match.setIplTeam1Id((Integer) row.get("iplTeamId1"));
-			match.setIplTeam2Id((Integer) row.get("iplTeamId2"));
+			match.setIplTeam1Id((Integer) row.get("iplTeam1Id"));
+			match.setIplTeam2Id((Integer) row.get("iplTeam2Id"));
 			match.setResult((String) row.get("result"));
 			match.setStatus((String) row.get("status"));
 			match.setTeamId1((Integer) row.get("teamid1"));
@@ -121,6 +128,13 @@ public class MatchDaoImpl implements MatchDao {
 
 		return matches;
 
+	}
+
+	public void updateCurrentState(int matchId, int deliveryCode) {
+	}
+
+	public void updateScore(int score1, int score2, int matchId) {
+		jdbcTemplate.update(SQL_UPDATE_MATCH_SCORE,score1, score2, matchId);
 	}
 
 }

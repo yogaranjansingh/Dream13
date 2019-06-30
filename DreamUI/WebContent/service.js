@@ -25,7 +25,6 @@ app.service('addSelectedPlayerService', function() {
 				"name" : name,
 				"id" : id
 			});
-		  
 	  }
 	});
 
@@ -33,4 +32,6 @@ app.service('utilService', function() {
 	this.selectedMatch =null;	
 	  this.loggedUser = null;
 	  this.loadedTeams = null;
+	  this.score1 = 0;
+	  this.score2 = 0;
 	});
