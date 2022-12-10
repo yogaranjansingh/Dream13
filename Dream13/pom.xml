@@ -9,7 +9,7 @@
 	<name>Dream13 Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<springframework.version>4.3.0.RELEASE</springframework.version>
+		<springframework.version>6.0.0</springframework.version>
 		<jackson.library>2.7.5</jackson.library>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
